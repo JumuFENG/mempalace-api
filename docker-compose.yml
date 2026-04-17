@@ -1,0 +1,21 @@
+services:
+  mempalace-api:
+    build: .
+    container_name: mempalace-api
+    ports:
+      - "8080:8080"
+    volumes:
+      - ~/.mempalace:/data/.mempalace
+    environment:
+      - MP_API_HOST=0.0.0.0
+      - MP_API_PORT=8080
+      - MP_PALACE_PATH=/data/.mempalace
+      - MP_LOG_LEVEL=INFO
+      - MP_CORS_ORIGINS=["*"]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
